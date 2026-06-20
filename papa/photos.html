@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Father's day</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="photos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Cabin:ital,wght@0,400..700;1,400..700&family=Dancing+Script:wght@400..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@200..800&family=Noto+Serif+JP:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orbitron:wght@400..900&family=Paprika&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+GB+J:ital,wght@0,100..400;1,100..400&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Background music. Same id/src as on home.html. Picks up automatically via audio.js. -->
+<audio id="bgMusic" src="song.mp3" loop preload="auto"></audio>
+
+<img src="balloon.png" class="balloon b1" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="1.jpeg" data-message="No matter how big we grow, we'll always be the two little girls holding Dad's hand. ❤️">
+<img src="balloon.png" class="balloon b2" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="2.jpeg" data-message="Every beautiful memory of our childhood has you in it. 🫶">
+<img src="balloon.png" class="balloon b3" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="3.jpeg" data-message="Home has always been wherever you are. ✨">
+<img src="balloon.png" class="balloon b4" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="4.jpeg" data-message="Growing up with you by my side was the greatest blessing. 🫶">
+<img src="balloon.png" class="balloon b5" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="5.jpeg" data-message="Life felt easier because I knew you were always there. 💖">
+<img src="balloon.png" class="balloon b6" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="6.jpeg" data-message="Thank you for always putting our happiness before your own. 💕">
+<img src="balloon.png" class="balloon b7" alt="" data-bs-target="#modalpic" data-bs-toggle="modal" data-photo="7.jpeg" data-message="Thank you for making my childhood so beautiful. ✨">
+<div class="modal fade" id="modalpic">
+  <div class='modal-dialog'>
+    <div class="modal-content">
+        <div class="modal-body">
+            <img  id="modalImage" class="imgmodal">
+        </div>
+        <div class="modal-footer" id="modalfooter"></div>
+    </div>
+  </div>
+</div>
+<div class="endingmessage" id="endingmessage">
+    <h1>Happy Father's Day ❤️</h1>
+    <p> Thank you for every sacrifice, every lesson, every smile,and every moment of unconditional love.
+       <br> We are who we are because of you.</p>
+</div>
+<script src="audio.js"></script>
+<script>
+const modal = document.getElementById('modalpic');
+const balloons = document.querySelectorAll('.balloon');
+const modalImage = document.getElementById('modalImage');
+const footer = document.getElementById('modalfooter');
+const endingMessage = document.getElementById('endingmessage');
+
+let current = null;
+let popped = 0;
+
+balloons.forEach(balloon => {
+    balloon.addEventListener('click', () => {
+        current = balloon;
+        modalImage.src = balloon.dataset.photo;
+        footer.textContent = balloon.dataset.message;
+    });
+});
+
+modal.addEventListener('hidden.bs.modal', () => {
+    if (current) {
+        const poppedBalloon = current; 
+
+        poppedBalloon.style.animation = 'none';
+        poppedBalloon.style.opacity = '0';
+        poppedBalloon.style.transform = 'scale(0)';
+
+        setTimeout(() => {
+            if (poppedBalloon.style.display !== 'none') {
+                poppedBalloon.style.display = 'none';
+                popped++;
+            }
+
+            if (popped === balloons.length) {
+                endingMessage.classList.add('show');
+
+                confetti({
+                    particleCount: 300,
+                    spread: 180,
+                    startVelocity: 40,
+                    origin: { y: 0.6 }
+                });
+            }
+        }, 800);
+    }
+});
+
+modal.addEventListener('shown.bs.modal', () => {
+
+    const duration = 1000;
+    const end = Date.now() + duration;
+
+    (function frame() {
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 80,
+            origin: { x: 0 }
+        });
+
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 80,
+            origin: { x: 1 }
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
